@@ -13,6 +13,7 @@ const subAdminMemberRoutes = require("./subadmin/routes/memberRoutes");
 const subAdminPastorRoutes = require("./subadmin/routes/pastorRoutes");
 const prayerScheduleRoutes = require("./subadmin/routes/prayerScheduleRoutes");
 const eventRoutes = require("./subadmin/routes/eventRoutes");
+const donationRoutes = require("./subadmin/routes/donationRoutes");
 
 // Middleware
 app.use(cors());
@@ -30,6 +31,7 @@ app.use("/api/subadmin/members",subAdminMemberRoutes);
 app.use( "/api/subadmin/pastors", subAdminPastorRoutes);
 app.use( "/api/subadmin/prayer-schedules", prayerScheduleRoutes);
 app.use("/api/subadmin/events",eventRoutes);
+app.use( "/api/subadmin/donations", donationRoutes);
 
 // Start server and test MySQL connection
 const startServer = async () => {
