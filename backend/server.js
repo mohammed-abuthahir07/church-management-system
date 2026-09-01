@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-
 const db = require("./config/database");
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,6 +14,7 @@ const prayerScheduleRoutes = require("./subadmin/routes/prayerScheduleRoutes");
 const eventRoutes = require("./subadmin/routes/eventRoutes");
 const donationRoutes = require("./subadmin/routes/donationRoutes");
 const announcementRoutes = require("./subadmin/routes/announcementRoutes");
+const analyticsRoutes = require("./subadmin/routes/analyticsRoutes");
 
 // Middleware
 app.use(cors());
@@ -23,17 +23,18 @@ app.use(express.json());
 // Super Admin API'S
 app.use("/api/superadmin/auth", superAdminAuthRoutes);
 app.use("/api/superadmin/branches", superAdminBranchRoutes);
-app.use( "/api/superadmin/subadmins", superAdminSubAdminRoutes);
+app.use("/api/superadmin/subadmins", superAdminSubAdminRoutes);
 
 
 // Sub Admin API'S
 app.use("/api/subadmin/auth", subAdminAuthRoutes);
 app.use("/api/subadmin/members",subAdminMemberRoutes);
-app.use( "/api/subadmin/pastors", subAdminPastorRoutes);
-app.use( "/api/subadmin/prayer-schedules", prayerScheduleRoutes);
+app.use("/api/subadmin/pastors", subAdminPastorRoutes);
+app.use("/api/subadmin/prayer-schedules", prayerScheduleRoutes);
 app.use("/api/subadmin/events",eventRoutes);
-app.use( "/api/subadmin/donations", donationRoutes);
-app.use( "/api/subadmin/announcements", announcementRoutes);
+app.use("/api/subadmin/donations", donationRoutes);
+app.use("/api/subadmin/announcements", announcementRoutes);
+app.use("/api/subadmin/analytics", analyticsRoutes);
 
 // Start server and test MySQL connection
 const startServer = async () => {
