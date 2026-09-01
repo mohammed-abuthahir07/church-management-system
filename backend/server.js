@@ -18,6 +18,7 @@ const analyticsRoutes = require("./subadmin/routes/analyticsRoutes");
 const dashboardRoutes = require("./subadmin/routes/dashboardRoutes");
 const superAdminDashboardRoutes = require("./superadmin/routes/dashboardRoutes");
 const superAdminFundRoutes = require("./superadmin/routes/fundRoutes");
+const superAdminNotificationRoutes = require("./superadmin/routes/notificationRoutes");
 
 // Middleware
 app.use(cors());
@@ -28,7 +29,7 @@ app.use("/api/superadmin/auth", superAdminAuthRoutes);
 app.use("/api/superadmin/branches", superAdminBranchRoutes);
 app.use("/api/superadmin/subadmins", superAdminSubAdminRoutes);
 app.use("/api/superadmin/dashboard", superAdminDashboardRoutes);
-
+app.use( "/api/superadmin/notifications", superAdminNotificationRoutes);
 
 // Sub Admin API'S
 app.use("/api/subadmin/auth", subAdminAuthRoutes);
