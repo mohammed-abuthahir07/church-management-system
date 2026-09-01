@@ -17,6 +17,7 @@ const announcementRoutes = require("./subadmin/routes/announcementRoutes");
 const analyticsRoutes = require("./subadmin/routes/analyticsRoutes");
 const dashboardRoutes = require("./subadmin/routes/dashboardRoutes");
 const superAdminDashboardRoutes = require("./superadmin/routes/dashboardRoutes");
+const superAdminFundRoutes = require("./superadmin/routes/fundRoutes");
 
 // Middleware
 app.use(cors());
@@ -39,6 +40,7 @@ app.use("/api/subadmin/donations", donationRoutes);
 app.use("/api/subadmin/announcements", announcementRoutes);
 app.use("/api/subadmin/analytics", analyticsRoutes);
 app.use("/api/subadmin/dashboard", dashboardRoutes);
+app.use( "/api/superadmin/funds", superAdminFundRoutes);
 
 
 // Start server and test MySQL connection
