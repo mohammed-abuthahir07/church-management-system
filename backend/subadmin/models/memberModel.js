@@ -1,6 +1,9 @@
 const db = require("../../config/database");
 
-// Create Member
+
+// =====================================================
+// CREATE MEMBER
+// =====================================================
 const createMember = async (memberData) => {
     const {
         branch_id,
@@ -42,13 +45,40 @@ const createMember = async (memberData) => {
 };
 
 
-// Get All Members of Branch
+// =====================================================
+// GET ALL MEMBERS
+// =====================================================
 const getAllMembers = async (branch_id) => {
     const [rows] = await db.query(
-        `SELECT *
-         FROM members
-         WHERE branch_id = ?
-         ORDER BY created_at DESC`,
+        `SELECT
+            m.*,
+
+            COALESCE(
+                (
+                    SELECT SUM(mp.amount)
+                    FROM member_payments mp
+                    WHERE mp.member_id = m.id
+                    AND mp.branch_id = m.branch_id
+                    AND MONTH(mp.payment_date) = MONTH(CURDATE())
+                    AND YEAR(mp.payment_date) = YEAR(CURDATE())
+                ),
+                0
+            ) AS this_month_amount,
+
+            COALESCE(
+                (
+                    SELECT SUM(mp.amount)
+                    FROM member_payments mp
+                    WHERE mp.member_id = m.id
+                    AND mp.branch_id = m.branch_id
+                    AND YEAR(mp.payment_date) = YEAR(CURDATE())
+                ),
+                0
+            ) AS this_year_amount
+
+        FROM members m
+        WHERE m.branch_id = ?
+        ORDER BY m.created_at DESC`,
         [branch_id]
     );
 
@@ -56,14 +86,41 @@ const getAllMembers = async (branch_id) => {
 };
 
 
-// Get Single Member of Branch
+// =====================================================
+// GET SINGLE MEMBER
+// =====================================================
 const getMemberById = async (id, branch_id) => {
     const [rows] = await db.query(
-        `SELECT *
-         FROM members
-         WHERE id = ?
-         AND branch_id = ?
-         LIMIT 1`,
+        `SELECT
+            m.*,
+
+            COALESCE(
+                (
+                    SELECT SUM(mp.amount)
+                    FROM member_payments mp
+                    WHERE mp.member_id = m.id
+                    AND mp.branch_id = m.branch_id
+                    AND MONTH(mp.payment_date) = MONTH(CURDATE())
+                    AND YEAR(mp.payment_date) = YEAR(CURDATE())
+                ),
+                0
+            ) AS this_month_amount,
+
+            COALESCE(
+                (
+                    SELECT SUM(mp.amount)
+                    FROM member_payments mp
+                    WHERE mp.member_id = m.id
+                    AND mp.branch_id = m.branch_id
+                    AND YEAR(mp.payment_date) = YEAR(CURDATE())
+                ),
+                0
+            ) AS this_year_amount
+
+        FROM members m
+        WHERE m.id = ?
+        AND m.branch_id = ?
+        LIMIT 1`,
         [id, branch_id]
     );
 
@@ -71,7 +128,9 @@ const getMemberById = async (id, branch_id) => {
 };
 
 
-// Update Member
+// =====================================================
+// UPDATE MEMBER
+// =====================================================
 const updateMember = async (id, branch_id, memberData) => {
     const {
         name,
@@ -112,7 +171,9 @@ const updateMember = async (id, branch_id, memberData) => {
 };
 
 
-// Activate / Deactivate Member
+// =====================================================
+// UPDATE MEMBER STATUS
+// =====================================================
 const updateMemberStatus = async (id, branch_id, status) => {
     const [result] = await db.query(
         `UPDATE members
@@ -126,7 +187,9 @@ const updateMemberStatus = async (id, branch_id, status) => {
 };
 
 
-// Delete Member
+// =====================================================
+// DELETE MEMBER
+// =====================================================
 const deleteMember = async (id, branch_id) => {
     const [result] = await db.query(
         `DELETE FROM members
@@ -139,11 +202,114 @@ const deleteMember = async (id, branch_id) => {
 };
 
 
+// =====================================================
+// ADD MEMBER PAYMENT
+// =====================================================
+const addMemberPayment = async (paymentData) => {
+    const {
+        member_id,
+        branch_id,
+        amount,
+        payment_date,
+        notes
+    } = paymentData;
+
+    const [result] = await db.query(
+        `INSERT INTO member_payments
+        (
+            member_id,
+            branch_id,
+            amount,
+            payment_date,
+            notes
+        )
+        VALUES (?, ?, ?, ?, ?)`,
+        [
+            member_id,
+            branch_id,
+            amount,
+            payment_date,
+            notes || null
+        ]
+    );
+
+    return result.insertId;
+};
+
+
+// =====================================================
+// GET MEMBER PAYMENT HISTORY
+// =====================================================
+const getMemberPayments = async (member_id, branch_id) => {
+    const [rows] = await db.query(
+        `SELECT
+            id,
+            member_id,
+            branch_id,
+            amount,
+            payment_date,
+            notes,
+            created_at
+         FROM member_payments
+         WHERE member_id = ?
+         AND branch_id = ?
+         ORDER BY payment_date DESC, id DESC`,
+        [member_id, branch_id]
+    );
+
+    return rows;
+};
+
+
+// =====================================================
+// GET MEMBER PAYMENT SUMMARY
+// =====================================================
+const getMemberPaymentSummary = async (member_id, branch_id) => {
+    const [rows] = await db.query(
+        `SELECT
+            COALESCE(
+                SUM(
+                    CASE
+                        WHEN MONTH(payment_date) = MONTH(CURDATE())
+                        AND YEAR(payment_date) = YEAR(CURDATE())
+                        THEN amount
+                        ELSE 0
+                    END
+                ),
+                0
+            ) AS this_month_amount,
+
+            COALESCE(
+                SUM(
+                    CASE
+                        WHEN YEAR(payment_date) = YEAR(CURDATE())
+                        THEN amount
+                        ELSE 0
+                    END
+                ),
+                0
+            ) AS this_year_amount,
+
+            COALESCE(SUM(amount), 0) AS total_amount
+
+         FROM member_payments
+         WHERE member_id = ?
+         AND branch_id = ?`,
+        [member_id, branch_id]
+    );
+
+    return rows[0];
+};
+
+
 module.exports = {
     createMember,
     getAllMembers,
     getMemberById,
     updateMember,
     updateMemberStatus,
-    deleteMember
+    deleteMember,
+    addMemberPayment,
+    getMemberPayments,
+    getMemberPaymentSummary
 };

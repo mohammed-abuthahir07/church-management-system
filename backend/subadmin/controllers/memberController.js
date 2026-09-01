@@ -1,7 +1,9 @@
 const memberModel = require("../models/memberModel");
 
 
-// Create Member
+// =====================================================
+// CREATE MEMBER
+// =====================================================
 const createMember = async (req, res) => {
     try {
         const branch_id = req.user.branch_id;
@@ -16,17 +18,17 @@ const createMember = async (req, res) => {
             joined_date
         } = req.body;
 
-        if (!name || !name.trim()) {
-            return res.status(400).json({
-                success: false,
-                message: "Member name is required"
-            });
-        }
-
         if (!branch_id) {
             return res.status(403).json({
                 success: false,
                 message: "Branch is not assigned to this account"
+            });
+        }
+
+        if (!name || !name.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Member name is required"
             });
         }
 
@@ -63,7 +65,9 @@ const createMember = async (req, res) => {
 };
 
 
-// Get All Members
+// =====================================================
+// GET ALL MEMBERS
+// =====================================================
 const getAllMembers = async (req, res) => {
     try {
         const branch_id = req.user.branch_id;
@@ -95,7 +99,9 @@ const getAllMembers = async (req, res) => {
 };
 
 
-// Get Single Member
+// =====================================================
+// GET SINGLE MEMBER
+// =====================================================
 const getMemberById = async (req, res) => {
     try {
         const branch_id = req.user.branch_id;
@@ -113,10 +119,16 @@ const getMemberById = async (req, res) => {
             });
         }
 
+        const payments = await memberModel.getMemberPayments(
+            id,
+            branch_id
+        );
+
         res.json({
             success: true,
             message: "Member fetched successfully",
-            member
+            member,
+            payments
         });
 
     } catch (error) {
@@ -130,7 +142,9 @@ const getMemberById = async (req, res) => {
 };
 
 
-// Update Member
+// =====================================================
+// UPDATE MEMBER
+// =====================================================
 const updateMember = async (req, res) => {
     try {
         const branch_id = req.user.branch_id;
@@ -197,7 +211,9 @@ const updateMember = async (req, res) => {
 };
 
 
-// Activate / Deactivate Member
+// =====================================================
+// UPDATE MEMBER STATUS
+// =====================================================
 const updateMemberStatus = async (req, res) => {
     try {
         const branch_id = req.user.branch_id;
@@ -255,7 +271,9 @@ const updateMemberStatus = async (req, res) => {
 };
 
 
-// Delete Member
+// =====================================================
+// DELETE MEMBER
+// =====================================================
 const deleteMember = async (req, res) => {
     try {
         const branch_id = req.user.branch_id;
@@ -291,11 +309,147 @@ const deleteMember = async (req, res) => {
 };
 
 
+// =====================================================
+// ADD MEMBER PAYMENT
+// =====================================================
+const addMemberPayment = async (req, res) => {
+    try {
+        const branch_id = req.user.branch_id;
+        const { id } = req.params;
+
+        const {
+            amount,
+            payment_date,
+            notes
+        } = req.body;
+
+        if (!branch_id) {
+            return res.status(403).json({
+                success: false,
+                message: "Branch is not assigned to this account"
+            });
+        }
+
+        if (!amount || Number(amount) <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Valid payment amount is required"
+            });
+        }
+
+        if (!payment_date) {
+            return res.status(400).json({
+                success: false,
+                message: "Payment date is required"
+            });
+        }
+
+        // Make sure member belongs to this branch
+        const member = await memberModel.getMemberById(
+            id,
+            branch_id
+        );
+
+        if (!member) {
+            return res.status(404).json({
+                success: false,
+                message: "Member not found"
+            });
+        }
+
+        const paymentId = await memberModel.addMemberPayment({
+            member_id: id,
+            branch_id,
+            amount: Number(amount),
+            payment_date,
+            notes
+        });
+
+        const payments = await memberModel.getMemberPayments(
+            id,
+            branch_id
+        );
+
+        const summary = await memberModel.getMemberPaymentSummary(
+            id,
+            branch_id
+        );
+
+        res.status(201).json({
+            success: true,
+            message: "Member payment recorded successfully",
+            payment_id: paymentId,
+            summary,
+            payments
+        });
+
+    } catch (error) {
+        console.error("Add member payment error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to record member payment"
+        });
+    }
+};
+
+
+// =====================================================
+// GET MEMBER PAYMENTS
+// =====================================================
+const getMemberPayments = async (req, res) => {
+    try {
+        const branch_id = req.user.branch_id;
+        const { id } = req.params;
+
+        const member = await memberModel.getMemberById(
+            id,
+            branch_id
+        );
+
+        if (!member) {
+            return res.status(404).json({
+                success: false,
+                message: "Member not found"
+            });
+        }
+
+        const payments = await memberModel.getMemberPayments(
+            id,
+            branch_id
+        );
+
+        const summary = await memberModel.getMemberPaymentSummary(
+            id,
+            branch_id
+        );
+
+        res.json({
+            success: true,
+            message: "Member payments fetched successfully",
+            member_id: Number(id),
+            summary,
+            payments
+        });
+
+    } catch (error) {
+        console.error("Get member payments error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch member payments"
+        });
+    }
+};
+
+
 module.exports = {
     createMember,
     getAllMembers,
     getMemberById,
     updateMember,
     updateMemberStatus,
-    deleteMember
+    deleteMember,
+    addMemberPayment,
+    getMemberPayments
 };
