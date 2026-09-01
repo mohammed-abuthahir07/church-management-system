@@ -1,20 +1,24 @@
 const db = require("../../config/database");
 
+
+// Create Branch
 const createBranch = async (branchData) => {
     const {
         name,
         address,
+        location,
         phone,
         email
     } = branchData;
 
     const [result] = await db.query(
         `INSERT INTO branches
-        (name, address, phone, email)
-        VALUES (?, ?, ?, ?)`,
+        (name, address, location, phone, email)
+        VALUES (?, ?, ?, ?, ?)`,
         [
             name,
             address || null,
+            location || null,
             phone || null,
             email || null
         ]
@@ -23,6 +27,8 @@ const createBranch = async (branchData) => {
     return result.insertId;
 };
 
+
+// Get All Branches
 const getAllBranches = async () => {
     const [rows] = await db.query(
         `SELECT *
@@ -33,6 +39,8 @@ const getAllBranches = async () => {
     return rows;
 };
 
+
+// Get Single Branch
 const getBranchById = async (id) => {
     const [rows] = await db.query(
         `SELECT *
@@ -45,10 +53,13 @@ const getBranchById = async (id) => {
     return rows[0];
 };
 
+
+// Update Branch
 const updateBranch = async (id, branchData) => {
     const {
         name,
         address,
+        location,
         phone,
         email
     } = branchData;
@@ -57,12 +68,14 @@ const updateBranch = async (id, branchData) => {
         `UPDATE branches
          SET name = ?,
              address = ?,
+             location = ?,
              phone = ?,
              email = ?
          WHERE id = ?`,
         [
             name,
             address || null,
+            location || null,
             phone || null,
             email || null,
             id
@@ -72,6 +85,8 @@ const updateBranch = async (id, branchData) => {
     return result;
 };
 
+
+// Activate / Deactivate Branch
 const updateBranchStatus = async (id, status) => {
     const [result] = await db.query(
         `UPDATE branches
@@ -83,6 +98,8 @@ const updateBranchStatus = async (id, status) => {
     return result;
 };
 
+
+// Delete Branch
 const deleteBranch = async (id) => {
     const [result] = await db.query(
         `DELETE FROM branches
@@ -92,6 +109,7 @@ const deleteBranch = async (id) => {
 
     return result;
 };
+
 
 module.exports = {
     createBranch,

@@ -1,11 +1,13 @@
 const branchModel = require("../models/branchModel");
 
+
 // Create Branch
 const createBranch = async (req, res) => {
     try {
         const {
             name,
             address,
+            location,
             phone,
             email
         } = req.body;
@@ -20,6 +22,7 @@ const createBranch = async (req, res) => {
         const branchId = await branchModel.createBranch({
             name: name.trim(),
             address,
+            location,
             phone,
             email
         });
@@ -105,6 +108,7 @@ const updateBranch = async (req, res) => {
         const {
             name,
             address,
+            location,
             phone,
             email
         } = req.body;
@@ -128,6 +132,7 @@ const updateBranch = async (req, res) => {
         await branchModel.updateBranch(id, {
             name: name.trim(),
             address,
+            location,
             phone,
             email
         });
@@ -179,7 +184,11 @@ const updateBranchStatus = async (req, res) => {
 
         res.json({
             success: true,
-            message: `Branch ${status === "ACTIVE" ? "activated" : "deactivated"} successfully`,
+            message: `Branch ${
+                status === "ACTIVE"
+                    ? "activated"
+                    : "deactivated"
+            } successfully`,
             branch: updatedBranch
         });
 

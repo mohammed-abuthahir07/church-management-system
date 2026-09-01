@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 5000;
 const superAdminAuthRoutes = require("./superadmin/routes/authroutes");
 const superAdminBranchRoutes = require("./superadmin/routes/branchRoutes");
 const superAdminSubAdminRoutes = require("./superadmin/routes/subAdminRoutes");
+const subAdminAuthRoutes = require("./subadmin/routes/authRoutes");
 
 // Middleware
 app.use(cors());
@@ -17,6 +18,11 @@ app.use(express.json());
 app.use("/api/superadmin/auth", superAdminAuthRoutes);
 app.use("/api/superadmin/branches", superAdminBranchRoutes);
 app.use( "/api/superadmin/subadmins", superAdminSubAdminRoutes);
+
+
+// Sub Admin API'S
+app.use("/api/subadmin/auth", subAdminAuthRoutes);
+
 
 // Start server and test MySQL connection
 const startServer = async () => {
