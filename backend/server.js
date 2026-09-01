@@ -7,15 +7,16 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const superAdminAuthRoutes = require("./superadmin/routes/authroutes");
 const superAdminBranchRoutes = require("./superadmin/routes/branchRoutes");
+const superAdminSubAdminRoutes = require("./superadmin/routes/subAdminRoutes");
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-
 // Super Admin API'S
 app.use("/api/superadmin/auth", superAdminAuthRoutes);
 app.use("/api/superadmin/branches", superAdminBranchRoutes);
+app.use( "/api/superadmin/subadmins", superAdminSubAdminRoutes);
 
 // Start server and test MySQL connection
 const startServer = async () => {
