@@ -10,6 +10,7 @@ const superAdminBranchRoutes = require("./superadmin/routes/branchRoutes");
 const superAdminSubAdminRoutes = require("./superadmin/routes/subAdminRoutes");
 const subAdminAuthRoutes = require("./subadmin/routes/authRoutes");
 const subAdminMemberRoutes = require("./subadmin/routes/memberRoutes");
+const subAdminPastorRoutes = require("./subadmin/routes/pastorRoutes");
 
 // Middleware
 app.use(cors());
@@ -24,6 +25,7 @@ app.use( "/api/superadmin/subadmins", superAdminSubAdminRoutes);
 // Sub Admin API'S
 app.use("/api/subadmin/auth", subAdminAuthRoutes);
 app.use("/api/subadmin/members",subAdminMemberRoutes);
+app.use( "/api/subadmin/pastors", subAdminPastorRoutes);
 
 
 // Start server and test MySQL connection
