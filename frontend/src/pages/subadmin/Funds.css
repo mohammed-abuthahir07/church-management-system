@@ -1,0 +1,7 @@
+/* Funds page styles */
+.kicker--emerald { color: #065F46; }
+.icon-tile--emerald {
+  background: #D1FAE5;
+  color: #065F46;
+  border: 1px solid rgba(110, 231, 183, 0.5);
+}

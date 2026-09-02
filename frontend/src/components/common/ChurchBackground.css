@@ -1,0 +1,68 @@
+.church-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.church-bg__orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(64px);
+}
+.church-bg__orb--a {
+  top: -8rem;
+  left: -8rem;
+  width: 24rem;
+  height: 24rem;
+  opacity: 0.3;
+}
+.church-bg__orb--b {
+  top: 25%;
+  right: -8rem;
+  width: 31rem;
+  height: 31rem;
+  opacity: 0.25;
+}
+.church-bg__ray {
+  position: absolute;
+  top: 0;
+  left: 33%;
+  width: 6rem;
+  height: 70vh;
+  filter: blur(64px);
+}
+
+.church-bg--light .church-bg__orb--a { background: rgba(252, 211, 77, 0.2); }
+.church-bg--light .church-bg__orb--b { background: rgba(191, 219, 254, 0.3); }
+.church-bg--light .church-bg__ray { background: rgba(253, 230, 138, 0.2); }
+.church-bg--dark .church-bg__orb--a { background: rgba(245, 158, 11, 0.1); }
+.church-bg--dark .church-bg__orb--b { background: rgba(37, 99, 235, 0.15); }
+.church-bg--dark .church-bg__ray { background: rgba(252, 211, 77, 0.1); }
+
+.church-bg__cross,
+.church-bg__dove {
+  position: absolute;
+}
+.church-bg__cross {
+  bottom: -5rem;
+  right: -5rem;
+  width: 20rem;
+  height: 20rem;
+}
+.church-bg__dove {
+  top: 33%;
+  left: -3rem;
+  width: 12rem;
+  height: 12rem;
+}
+.church-bg--light .church-bg__cross { color: rgba(180, 83, 9, 0.05); }
+.church-bg--dark .church-bg__cross { color: rgba(251, 191, 36, 0.05); }
+.church-bg--light .church-bg__dove { color: rgba(51, 65, 85, 0.04); }
+.church-bg--dark .church-bg__dove { color: rgba(148, 163, 184, 0.05); }
+
+@media (min-width: 640px) {
+  .church-bg__cross { width: 24rem; height: 24rem; }
+  .church-bg__dove { width: 16rem; height: 16rem; }
+}

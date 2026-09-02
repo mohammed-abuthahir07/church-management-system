@@ -1,0 +1,5 @@
+/* Funds page styles */
+.funds-span-2 .kicker { display: block; margin-bottom: 0.75rem; }
+@media (min-width: 768px) {
+  .funds-span-2 { grid-column: span 2; }
+}

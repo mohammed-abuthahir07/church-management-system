@@ -1,0 +1,45 @@
+.table-skeleton { overflow: hidden; }
+.table-skeleton__head {
+  padding: 1rem;
+  background: #F9F6EE;
+  border-bottom: 1px solid rgba(253, 230, 138, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.table-skeleton__title { width: 12rem; height: 1.5rem; }
+.table-skeleton__action { width: 8rem; height: 2rem; border-radius: 0.5rem; }
+.table-skeleton__body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.table-skeleton__row { display: flex; align-items: center; gap: 1rem; }
+.table-skeleton__cell { height: 1.25rem; flex: 1; }
+
+.card-skeleton-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+.card-skeleton { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.card-skeleton__top { display: flex; align-items: center; justify-content: space-between; }
+.card-skeleton__label { width: 6rem; height: 1rem; }
+.card-skeleton__icon { width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; }
+.card-skeleton__value { width: 8rem; height: 2rem; }
+.card-skeleton__sub { width: 5rem; height: 0.75rem; }
+
+.dashboard-skeleton { display: flex; flex-direction: column; gap: 1.5rem; }
+.dashboard-skeleton__hero { height: 11rem; border-radius: 1rem; }
+.dashboard-skeleton__charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+.dashboard-skeleton__panel { height: 20rem; border-radius: 1rem; }
+
+@media (min-width: 640px) {
+  .card-skeleton-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1024px) {
+  .dashboard-skeleton__charts { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1280px) {
+  .card-skeleton-grid { grid-template-columns: repeat(4, 1fr); }
+}

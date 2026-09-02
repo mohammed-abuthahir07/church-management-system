@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="crossGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F3E5AB" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#AA820A" />
+    </linearGradient>
+    <linearGradient id="circleNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B3573" />
+      <stop offset="100%" stop-color="#0B1B3D" />
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#D4AF37" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <!-- Background Aura Circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#circleNavy)" stroke="url(#crossGold)" stroke-width="2" />
+  <circle cx="50" cy="40" r="28" fill="url(#halo)" />
+  <circle cx="50" cy="40" r="18" stroke="url(#crossGold)" stroke-width="1.5" stroke-dasharray="2 3" opacity="0.8" />
+  
+  <!-- Stylized Christian Cross -->
+  <!-- Vertical Beam -->
+  <path d="M47 18 C47 16 53 16 53 18 L53 82 C53 84 47 84 47 82 Z" fill="url(#crossGold)" />
+  <!-- Horizontal Beam -->
+  <path d="M26 36 C24 36 24 42 26 42 L74 42 C76 42 76 36 74 36 Z" fill="url(#crossGold)" />
+  <!-- Center Star/Diamond Highlight -->
+  <polygon points="50,33 54,39 50,45 46,39" fill="#FFF8E7" opacity="0.9" />
+</svg>

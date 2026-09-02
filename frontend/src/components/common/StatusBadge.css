@@ -1,0 +1,3 @@
+.status-badge__icon { flex-shrink: 0; }
+.status-badge__icon--on { color: #059669; }
+.badge-inactive .status-badge__icon { color: #64748B; }

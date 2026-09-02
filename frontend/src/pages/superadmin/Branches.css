@@ -1,0 +1,5 @@
+/* Branches page styles */
+.action-btn.power-on { color: #047857; }
+.action-btn.power-on:hover { background: #ECFDF5; color: #E11D48; }
+.action-btn.power-off { color: #94A3B8; }
+.action-btn.power-off:hover { background: #ECFDF5; color: #059669; }

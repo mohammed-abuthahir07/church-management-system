@@ -1,0 +1,66 @@
+.church-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+  min-width: 0;
+}
+
+.church-logo__mark {
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  background: linear-gradient(135deg, #142C61, #071126);
+  box-shadow: 0 4px 10px rgba(7, 17, 38, 0.2);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.church-logo__mark--sm { width: 32px; height: 32px; }
+.church-logo__mark--md { width: 40px; height: 40px; }
+.church-logo__mark--lg { width: 56px; height: 56px; }
+.church-logo__halo {
+  position: absolute;
+  inset: 0;
+  background: rgba(251, 191, 36, 0.1);
+  border-radius: 0.75rem;
+}
+.church-logo__svg { width: 100%; height: 100%; }
+
+.church-logo__row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.church-logo__grace {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.church-logo__church { font-style: italic; font-weight: 600; }
+.church-logo__sub {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.church-logo--sm .church-logo__grace { font-size: 1rem; }
+.church-logo--md .church-logo__grace { font-size: 1.125rem; }
+.church-logo--lg .church-logo__grace { font-size: 1.5rem; }
+.church-logo--sm .church-logo__church { font-size: 0.75rem; }
+.church-logo--md .church-logo__church { font-size: 0.875rem; }
+.church-logo--lg .church-logo__church { font-size: 1rem; }
+
+.church-logo--light .church-logo__grace { color: #fff; }
+.church-logo--dark .church-logo__grace { color: #0B1B3D; }
+.church-logo--light .church-logo__church { color: #FCD34D; }
+.church-logo--dark .church-logo__church { color: #B45309; }
+.church-logo--light .church-logo__sub { color: rgba(203, 213, 225, 0.8); }
+.church-logo--dark .church-logo__sub { color: #64748B; }
+
+@media (min-width: 640px) {
+  .church-logo { gap: 0.75rem; }
+}
