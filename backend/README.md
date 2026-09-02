@@ -77,6 +77,8 @@ AUTHENTICATION
 
 All protected APIs require:
 
+Server running on http://localhost:5000
+
 Authorization: Bearer <JWT_TOKEN>
 
 Super Admin APIs must require:
