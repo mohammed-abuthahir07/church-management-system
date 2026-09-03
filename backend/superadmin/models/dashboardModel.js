@@ -194,8 +194,8 @@ const getUpcomingEvents = async () => {
 
 const getTodayPrayerSchedule = async () => {
     const [rows] = await db.query(
-        `SELECT
-            p.*,
+        `SELECT 
+            p.*, 
             b.name AS branch_name
 
          FROM prayer_schedules p
@@ -203,14 +203,14 @@ const getTodayPrayerSchedule = async () => {
          LEFT JOIN branches b
             ON p.branch_id = b.id
 
-         WHERE p.prayer_date = CURDATE()
+         WHERE p.day_of_week = DAYNAME(CURDATE())
          AND p.status = 'ACTIVE'
 
          ORDER BY p.start_time ASC`
     );
 
     return rows;
-};
+}
 
 
 // =====================================================

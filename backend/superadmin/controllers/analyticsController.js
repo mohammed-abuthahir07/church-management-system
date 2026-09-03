@@ -1,5 +1,4 @@
-const analyticsModel =
-    require("../models/analyticsModel");
+const analyticsModel = require("../models/analyticsModel");
 
 
 // =====================================================
@@ -187,38 +186,6 @@ const getEvents = async (req, res) => {
     }
 };
 
-
-// =====================================================
-// PRAYER ANALYTICS
-// =====================================================
-
-const getPrayer = async (req, res) => {
-    try {
-
-        const data =
-            await analyticsModel.getPrayerAnalytics();
-
-        res.json({
-            success: true,
-            message: "Prayer analytics fetched successfully",
-            data
-        });
-
-    } catch (error) {
-
-        console.error(
-            "Prayer analytics error:",
-            error
-        );
-
-        res.status(500).json({
-            success: false,
-            message: "Failed to fetch prayer analytics"
-        });
-    }
-};
-
-
 // =====================================================
 // NOTIFICATION ANALYTICS
 // =====================================================
@@ -259,6 +226,5 @@ module.exports = {
     getDonations,
     getFunds,
     getEvents,
-    getPrayer,
     getNotifications
 };

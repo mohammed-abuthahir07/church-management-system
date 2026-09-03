@@ -1,4 +1,5 @@
 const db = require("../../config/database");
+const { getPrayer } = require("../controllers/analyticsController");
 
 // =====================================================
 // BRANCH ANALYTICS
@@ -362,58 +363,6 @@ const getEventAnalytics = async () => {
     };
 };
 
-
-// =====================================================
-// PRAYER ANALYTICS
-// =====================================================
-
-const getPrayerAnalytics = async () => {
-
-    const [[total]] = await db.query(`
-        SELECT COUNT(*) AS total_prayer_schedules
-        FROM prayer_schedules
-    `);
-
-    const [[today]] = await db.query(`
-        SELECT COUNT(*) AS todays_prayers
-        FROM prayer_schedules
-        WHERE prayer_date = CURDATE()
-          AND status = 'ACTIVE'
-    `);
-
-    const [byBranch] = await db.query(`
-        SELECT
-            b.id AS branch_id,
-            b.name AS branch_name,
-            COUNT(ps.id) AS total_prayer_schedules
-
-        FROM branches b
-
-        LEFT JOIN prayer_schedules ps
-            ON ps.branch_id = b.id
-
-        GROUP BY b.id, b.name
-
-        ORDER BY total_prayer_schedules DESC
-    `);
-
-    return {
-        total_prayer_schedules:
-            Number(total.total_prayer_schedules || 0),
-
-        todays_prayers:
-            Number(today.todays_prayers || 0),
-
-        by_branch: byBranch.map(row => ({
-            branch_id: row.branch_id,
-            branch_name: row.branch_name,
-            total_prayer_schedules:
-                Number(row.total_prayer_schedules || 0)
-        }))
-    };
-};
-
-
 // =====================================================
 // NOTIFICATION ANALYTICS
 // =====================================================
@@ -483,6 +432,5 @@ module.exports = {
     getDonationAnalytics,
     getFundAnalytics,
     getEventAnalytics,
-    getPrayerAnalytics,
     getNotificationAnalytics
 };

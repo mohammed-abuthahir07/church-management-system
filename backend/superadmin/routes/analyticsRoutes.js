@@ -25,7 +25,6 @@ router.get( "/pastors", analyticsController.getPastors);
 router.get( "/donations", analyticsController.getDonations);
 router.get("/funds", analyticsController.getFunds);
 router.get("/events", analyticsController.getEvents);
-router.get("/prayer", analyticsController.getPrayer);
 router.get("/notifications", analyticsController.getNotifications);
 
 module.exports = router;
