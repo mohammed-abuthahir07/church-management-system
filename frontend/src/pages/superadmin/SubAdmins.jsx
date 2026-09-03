@@ -252,9 +252,6 @@ export const SubAdmins = () => {
                           <span className="cell-name">
                             {admin.branch_name || `Branch #${admin.branch_id}`}
                           </span>
-                          <span className="row-meta">
-                            Branch ID: #{admin.branch_id}
-                          </span>
                         </div>
                       </div>
                     </td>

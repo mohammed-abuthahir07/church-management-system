@@ -93,7 +93,7 @@ export const SuperAdminProfile = () => {
                 Account ID
               </div>
               <div className="profile-tile__value">
-                #{profile?.id}
+                {profile?.id}
               </div>
             </div>
 

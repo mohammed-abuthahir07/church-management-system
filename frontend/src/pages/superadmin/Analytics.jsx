@@ -135,7 +135,7 @@ export const SuperAdminAnalytics = () => {
   return (
     <div className="page-lg">
       <PageHeader
-        title="Diocesan Analytics & Growth"
+        title="Diocesan Analytics  Growth"
         subtitle="Visual insights into membership expansion, financial stewardship, and ministry across all branches"
         icon={BarChart3}
       />
@@ -266,18 +266,7 @@ export const SuperAdminAnalytics = () => {
         </ChartCard>
 
         {/* Prayer Schedules Breakdown */}
-        <ChartCard
-          title="Prayer Schedules"
-          subtitle={`Total: ${prayerData.total_prayer_schedules} | Today: ${prayerData.todays_prayers}`}
-          icon={Sparkles}
-          height="h-64"
-        >
-          <BranchBarChart
-            data={prayerData.by_branch || []}
-            xKey="branch_name"
-            bars={[{ key: 'total_prayer_schedules', name: 'Prayer Schedules', color: '#D4AF37' }]}
-          />
-        </ChartCard>
+        
 
         {/* Notification Distribution */}
         <ChartCard

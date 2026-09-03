@@ -287,7 +287,6 @@ export const SuperAdminFunds = () => {
                       <div className="row-name font-serif">
                         {fund.branch_name}
                       </div>
-                      <div className="row-meta">Branch ID: #{fund.branch_id}</div>
                     </td>
 
                     <td data-label="Amount">
