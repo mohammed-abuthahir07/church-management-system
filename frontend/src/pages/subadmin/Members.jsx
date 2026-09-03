@@ -297,7 +297,7 @@ export const SubAdminMembers = () => {
                   <th>Contact Info</th>
                   <th>Gender & Age</th>
                   <th>Joined Date</th>
-                  <th>Initial Tithe</th>
+                  
                   <th className="th-right">Actions</th>
                 </tr>
               </thead>
@@ -345,12 +345,6 @@ export const SubAdminMembers = () => {
                         <Calendar className="icon-sm icon-amber" />
                         <span>{formatDate(member.joined_date)}</span>
                       </div>
-                    </td>
-
-                    <td data-label="Tithe">
-                      <span className="cell-amount">
-                        {formatIndianCurrency(member.amount || 0)}
-                      </span>
                     </td>
 
                     <td data-label="Actions">
@@ -477,24 +471,6 @@ export const SubAdminMembers = () => {
               />
             </div>
           </div>
-
-          <div>
-            <label className="form-label">
-              Initial Offering / Amount (₹)
-            </label>
-            <div className="input-wrap">
-              <IndianRupee className="icon-md input-icon" />
-              <input
-                type="number"
-                min="0"
-                value={formData.amount}
-                onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                placeholder="1000"
-                className="church-input has-icon"
-              />
-            </div>
-          </div>
-
           <div>
             <label className="form-label">
               Residential Address

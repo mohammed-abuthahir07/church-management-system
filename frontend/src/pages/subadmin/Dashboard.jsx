@@ -135,7 +135,7 @@ export const SubAdminDashboard = () => {
 
         <StatCard
           title="Parish Donations"
-          value={donationData.total}
+          value={donationData.this_year}
           isCurrency={true}
           icon={HeartHandshake}
           color="emerald"

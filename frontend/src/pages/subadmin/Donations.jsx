@@ -201,7 +201,7 @@ export const SubAdminDonations = () => {
           <p className="muted">Total parish offerings this year</p>
         </div>
 
-        <div className="church-card metric-card metric-card--navy">
+        {/* <div className="church-card metric-card metric-card--navy">
           <span className="kicker kicker--navy font-cinzel">
             All-Time Total
           </span>
@@ -209,7 +209,7 @@ export const SubAdminDonations = () => {
             {formatIndianCurrency(donationDashboard.total)}
           </div>
           <p className="muted">Historical church donations</p>
-        </div>
+        </div> */}
       </div>
 
       {/* Search Bar */}

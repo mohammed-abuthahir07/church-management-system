@@ -53,19 +53,41 @@ export const SubAdminPrayerSchedules = () => {
   const { success, error: toastError } = useToast();
 
   const fetchSchedules = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const res = await subAdminApi.getAllPrayerSchedules();
-      if (res.prayer_schedules) {
-        setSchedules(res.prayer_schedules);
-      }
-    } catch (err) {
-      setError(err.message || 'Failed to fetch prayer schedules');
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    setLoading(true);
+    setError(null);
+
+    const res = await subAdminApi.getAllPrayerSchedules();
+
+    // Handle the existing API response safely.
+    // Do not change the backend/API.
+    const prayerSchedules =
+      Array.isArray(res)
+        ? res
+        : Array.isArray(res?.prayer_schedules)
+          ? res.prayer_schedules
+          : Array.isArray(res?.prayerSchedules)
+            ? res.prayerSchedules
+            : Array.isArray(res?.schedules)
+              ? res.schedules
+              : Array.isArray(res?.data)
+                ? res.data
+                : Array.isArray(res?.data?.prayer_schedules)
+                  ? res.data.prayer_schedules
+                  : Array.isArray(res?.data?.prayerSchedules)
+                    ? res.data.prayerSchedules
+                    : Array.isArray(res?.data?.schedules)
+                      ? res.data.schedules
+                      : [];
+
+    setSchedules(prayerSchedules);
+  } catch (err) {
+    setError(err.message || 'Failed to fetch prayer schedules');
+    setSchedules([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchSchedules();
