@@ -36,7 +36,7 @@ export const Sidebar = ({ isMobileOpen, onCloseMobile }) => {
   const subAdminNav = [
     { to: '/subadmin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/subadmin/members', label: 'Members', icon: Users },
-    { to: '/subadmin/pastors', label: 'Pastors / Leaders', icon: Church },
+    { to: '/subadmin/pastors', label: 'Pastor', icon: Church },
     { to: '/subadmin/prayer-schedules', label: 'Prayer Schedule', icon: Sparkles },
     { to: '/subadmin/events', label: 'Events', icon: Calendar },
     { to: '/subadmin/donations', label: 'Donations', icon: HeartHandshake },

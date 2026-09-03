@@ -1,1 +1,348 @@
-/* Analytics page styles */
+/* =====================================================
+   THEME VARIABLES & DESIGN SYSTEM
+   ===================================================== */
+:root {
+  /* Color Palette */
+  --bg-main: #f8fafc;
+  --panel-bg: #ffffff;
+  --border-color: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+
+  /* Accent Colors */
+  --gold-bg: #fef9c3;
+  --gold-accent: #d97706;
+  --emerald-bg: #dcfce7;
+  --emerald-accent: #059669;
+  --sky-bg: #e0f2fe;
+  --sky-accent: #0284c7;
+  --navy-bg: #e0e7ff;
+  --navy-accent: #4338ca;
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 12px 20px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+  /* Animation & Spacing System */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --border-radius: 14px;
+  --page-padding: clamp(10px, 2vw, 10px);
+  --gap-grid: clamp(14px, 2vw, 24px);
+}
+
+/* Automatic Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-main: #0f172a;
+    --panel-bg: #1e293b;
+    --border-color: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --gold-bg: rgba(217, 119, 6, 0.15);
+    --gold-accent: #fbbf24;
+    --emerald-bg: rgba(5, 150, 105, 0.15);
+    --emerald-accent: #34d399;
+    --sky-bg: rgba(2, 132, 199, 0.15);
+    --sky-accent: #38bdf8;
+    --navy-bg: rgba(67, 56, 202, 0.15);
+    --navy-accent: #818cf8;
+  }
+}
+
+
+/* =====================================================
+   KEYFRAME ANIMATIONS
+   ===================================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================================================
+   LAYOUT CONTAINER
+   ===================================================== */
+.page-lg {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: var(--page-padding);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-grid);
+  animation: fadeInUp var(--transition-normal) forwards;
+  box-sizing: border-box;
+}
+
+/* Base Panel / Card Styling */
+.church-card,
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Interactive Hover for Devices with Mice */
+@media (hover: hover) and (pointer: fine) {
+  .church-card:hover,
+  .panel:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+  
+  .church-card:hover .icon-tile {
+    transform: scale(1.08) rotate(3deg);
+  }
+
+  .rank-row:hover {
+    background-color: rgba(241, 245, 249, 0.5);
+    transform: translateX(4px);
+  }
+}
+
+/* =====================================================
+   STAT CARDS GRID
+   ===================================================== */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--gap-grid);
+}
+
+.stat-grid > * {
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stat-grid > *:nth-child(1) { animation-delay: 0.05s; }
+.stat-grid > *:nth-child(2) { animation-delay: 0.1s; }
+.stat-grid > *:nth-child(3) { animation-delay: 0.15s; }
+.stat-grid > *:nth-child(4) { animation-delay: 0.2s; }
+
+/* =====================================================
+   CHARTS & MULTI-COLUMN GRIDS
+   ===================================================== */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-grid);
+}
+
+.chart-span-2 {
+  grid-column: span 2;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap-grid);
+}
+
+/* Responsive Chart Container Heights */
+.h-80 { height: clamp(260px, 40vh, 360px); }
+.h-72 { height: clamp(240px, 35vh, 320px); }
+
+/* =====================================================
+   PANEL HEADERS & ICON TILES
+   ===================================================== */
+.panel-head {
+  padding: clamp(14px, 2vw, 20px) clamp(16px, 2.5vw, 24px);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.panel-head__left {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.5vw, 16px);
+}
+
+.panel-title {
+  margin: 0;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.font-serif {
+  font-family: 'Georgia', 'Cambria', serif;
+}
+
+.count-text {
+  margin: 2px 0 0 0;
+  font-size: clamp(0.78rem, 0.9vw, 0.875rem);
+  color: var(--text-secondary);
+}
+
+/* Animated Icon Tiles */
+.icon-tile {
+  width: clamp(38px, 3vw, 46px);
+  height: clamp(38px, 3vw, 46px);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform var(--transition-normal);
+}
+
+.icon-tile--gold { background: var(--gold-bg); color: var(--gold-accent); }
+.icon-tile--emerald { background: var(--emerald-bg); color: var(--emerald-accent); }
+.icon-tile--sky { background: var(--sky-bg); color: var(--sky-accent); }
+.icon-tile--navy { background: var(--navy-bg); color: var(--navy-accent); }
+
+.icon-md { width: clamp(18px, 1.5vw, 22px); height: clamp(18px, 1.5vw, 22px); }
+.icon-sm { width: clamp(14px, 1.2vw, 16px); height: clamp(14px, 1.2vw, 16px); }
+
+/* =====================================================
+   LIST FEEDS & RANK ROWS
+   ===================================================== */
+.feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.rank-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(10px, 1.5vw, 16px) clamp(16px, 2.5vw, 24px);
+  border-bottom: 1px solid var(--border-color);
+  gap: 12px;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.rank-row:last-child {
+  border-bottom: none;
+}
+
+.rank-left {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.5vw, 14px);
+  min-width: 0; /* Prevents text overflow breaking layout */
+}
+
+.rank-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cell-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cell-amount {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: clamp(0.875rem, 1vw, 0.975rem);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.table-empty {
+  padding: clamp(24px, 4vw, 40px);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+/* =====================================================
+   RESPONSIVE BREAKPOINTS (ALL DEVICES)
+   ===================================================== */
+
+/* Ultra-Wide Monitors (> 1600px) */
+@media (min-width: 1600px) {
+  .stat-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Laptops & Standard Desktops (1025px - 1280px) */
+@media (max-width: 1280px) {
+  .chart-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .chart-span-2 {
+    grid-column: span 2;
+  }
+}
+
+/* Tablets & Small Laptops (769px - 1024px) */
+@media (max-width: 1024px) {
+  .chart-grid,
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-span-2 {
+    grid-column: span 1;
+  }
+  
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile Devices & Small Tablets (481px - 768px) */
+@media (max-width: 768px) {
+  .rank-row {
+    flex-wrap: wrap;
+  }
+
+  .rank-row > div:last-child {
+    width: 100%;
+    justify-content: flex-start;
+    padding-left: 42px; /* Aligns content past badge icon */
+  }
+}
+
+/* Small Mobiles & Foldables (<= 480px) */
+@media (max-width: 480px) {
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cell-name {
+    white-space: normal; /* Allow titles to wrap on ultra-small screens */
+  }
+
+  .rank-row > div:last-child {
+    padding-left: 0;
+  }
+}

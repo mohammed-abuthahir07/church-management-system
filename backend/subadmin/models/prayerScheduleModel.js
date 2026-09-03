@@ -1,15 +1,30 @@
 const db = require("../../config/database");
 
+// =====================================================
+// VALID DAYS
+// =====================================================
+
+const VALID_DAYS = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+];
+
 
 // =====================================================
 // CREATE PRAYER SCHEDULE
 // =====================================================
+
 const createPrayerSchedule = async (scheduleData) => {
     const {
         branch_id,
         title,
         description,
-        prayer_date,
+        day_of_week,
         start_time,
         end_time,
         location
@@ -21,7 +36,7 @@ const createPrayerSchedule = async (scheduleData) => {
             branch_id,
             title,
             description,
-            prayer_date,
+            day_of_week,
             start_time,
             end_time,
             location
@@ -31,7 +46,7 @@ const createPrayerSchedule = async (scheduleData) => {
             branch_id,
             title,
             description || null,
-            prayer_date,
+            day_of_week,
             start_time,
             end_time,
             location || null
@@ -45,12 +60,24 @@ const createPrayerSchedule = async (scheduleData) => {
 // =====================================================
 // GET ALL PRAYER SCHEDULES
 // =====================================================
+
 const getAllPrayerSchedules = async (branch_id) => {
     const [rows] = await db.query(
         `SELECT *
          FROM prayer_schedules
          WHERE branch_id = ?
-         ORDER BY prayer_date ASC, start_time ASC`,
+         ORDER BY
+            FIELD(
+                day_of_week,
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday',
+                'Sunday'
+            ),
+            start_time ASC`,
         [branch_id]
     );
 
@@ -61,12 +88,14 @@ const getAllPrayerSchedules = async (branch_id) => {
 // =====================================================
 // GET TODAY'S PRAYER SCHEDULES
 // =====================================================
+
 const getTodayPrayerSchedules = async (branch_id) => {
     const [rows] = await db.query(
         `SELECT *
          FROM prayer_schedules
          WHERE branch_id = ?
-         AND prayer_date = CURDATE()
+           AND day_of_week = DAYNAME(CURDATE())
+           AND status = 'ACTIVE'
          ORDER BY start_time ASC`,
         [branch_id]
     );
@@ -76,14 +105,15 @@ const getTodayPrayerSchedules = async (branch_id) => {
 
 
 // =====================================================
-// GET SINGLE PRAYER SCHEDULE
+// GET PRAYER SCHEDULE BY ID
 // =====================================================
+
 const getPrayerScheduleById = async (id, branch_id) => {
     const [rows] = await db.query(
         `SELECT *
          FROM prayer_schedules
          WHERE id = ?
-         AND branch_id = ?
+           AND branch_id = ?
          LIMIT 1`,
         [id, branch_id]
     );
@@ -95,6 +125,7 @@ const getPrayerScheduleById = async (id, branch_id) => {
 // =====================================================
 // UPDATE PRAYER SCHEDULE
 // =====================================================
+
 const updatePrayerSchedule = async (
     id,
     branch_id,
@@ -103,7 +134,7 @@ const updatePrayerSchedule = async (
     const {
         title,
         description,
-        prayer_date,
+        day_of_week,
         start_time,
         end_time,
         location
@@ -114,16 +145,16 @@ const updatePrayerSchedule = async (
          SET
             title = ?,
             description = ?,
-            prayer_date = ?,
+            day_of_week = ?,
             start_time = ?,
             end_time = ?,
             location = ?
          WHERE id = ?
-         AND branch_id = ?`,
+           AND branch_id = ?`,
         [
             title,
             description || null,
-            prayer_date,
+            day_of_week,
             start_time,
             end_time,
             location || null,
@@ -139,6 +170,7 @@ const updatePrayerSchedule = async (
 // =====================================================
 // UPDATE STATUS
 // =====================================================
+
 const updatePrayerScheduleStatus = async (
     id,
     branch_id,
@@ -148,7 +180,7 @@ const updatePrayerScheduleStatus = async (
         `UPDATE prayer_schedules
          SET status = ?
          WHERE id = ?
-         AND branch_id = ?`,
+           AND branch_id = ?`,
         [
             status,
             id,
@@ -163,6 +195,7 @@ const updatePrayerScheduleStatus = async (
 // =====================================================
 // DELETE PRAYER SCHEDULE
 // =====================================================
+
 const deletePrayerSchedule = async (
     id,
     branch_id
@@ -170,7 +203,7 @@ const deletePrayerSchedule = async (
     const [result] = await db.query(
         `DELETE FROM prayer_schedules
          WHERE id = ?
-         AND branch_id = ?`,
+           AND branch_id = ?`,
         [
             id,
             branch_id
@@ -181,7 +214,12 @@ const deletePrayerSchedule = async (
 };
 
 
+// =====================================================
+// EXPORTS
+// =====================================================
+
 module.exports = {
+    VALID_DAYS,
     createPrayerSchedule,
     getAllPrayerSchedules,
     getTodayPrayerSchedules,

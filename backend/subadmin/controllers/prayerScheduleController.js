@@ -1,25 +1,52 @@
 const prayerScheduleModel = require("../models/prayerScheduleModel");
 
+const VALID_DAYS = prayerScheduleModel.VALID_DAYS;
+
+
+// =====================================================
+// NORMALIZE DAY
+// =====================================================
+
+const normalizeDay = (day) => {
+    if (!day || typeof day !== "string") {
+        return null;
+    }
+
+    const normalized =
+        day.trim().charAt(0).toUpperCase() +
+        day.trim().slice(1).toLowerCase();
+
+    if (!VALID_DAYS.includes(normalized)) {
+        return null;
+    }
+
+    return normalized;
+};
+
+
+// =====================================================
+// VALIDATE TIME
+// =====================================================
+
+const isValidTime = (time) => {
+    if (typeof time !== "string") {
+        return false;
+    }
+
+    return /^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/.test(time);
+};
+
 
 // =====================================================
 // CREATE PRAYER SCHEDULE
 // =====================================================
+
 const createPrayerSchedule = async (req, res) => {
     try {
 
+        // NEVER trust branch_id from frontend.
         const branch_id = req.user.branch_id;
 
-        const {
-            title,
-            description,
-            prayer_date,
-            start_time,
-            end_time,
-            location
-        } = req.body;
-
-
-        // Check branch
         if (!branch_id) {
             return res.status(403).json({
                 success: false,
@@ -27,8 +54,20 @@ const createPrayerSchedule = async (req, res) => {
             });
         }
 
+        const {
+            title,
+            description,
+            day_of_week,
+            start_time,
+            end_time,
+            location
+        } = req.body;
 
-        // Required fields
+
+        // -----------------------------
+        // TITLE
+        // -----------------------------
+
         if (!title || !title.trim()) {
             return res.status(400).json({
                 success: false,
@@ -37,31 +76,49 @@ const createPrayerSchedule = async (req, res) => {
         }
 
 
-        if (!prayer_date) {
+        // -----------------------------
+        // DAY
+        // -----------------------------
+
+        const normalizedDay = normalizeDay(day_of_week);
+
+        if (!normalizedDay) {
             return res.status(400).json({
                 success: false,
-                message: "Prayer date is required"
+                message:
+                    "Valid day is required: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, or Sunday"
             });
         }
 
 
-        if (!start_time) {
+        // -----------------------------
+        // START TIME
+        // -----------------------------
+
+        if (!isValidTime(start_time)) {
             return res.status(400).json({
                 success: false,
-                message: "Start time is required"
+                message: "Valid start time is required"
             });
         }
 
 
-        if (!end_time) {
+        // -----------------------------
+        // END TIME
+        // -----------------------------
+
+        if (!isValidTime(end_time)) {
             return res.status(400).json({
                 success: false,
-                message: "End time is required"
+                message: "Valid end time is required"
             });
         }
 
 
-        // Validate time
+        // -----------------------------
+        // TIME ORDER
+        // -----------------------------
+
         if (start_time >= end_time) {
             return res.status(400).json({
                 success: false,
@@ -70,17 +127,25 @@ const createPrayerSchedule = async (req, res) => {
         }
 
 
+        // -----------------------------
+        // CREATE
+        // -----------------------------
+
         const scheduleId =
             await prayerScheduleModel.createPrayerSchedule({
                 branch_id,
                 title: title.trim(),
-                description,
-                prayer_date,
+                description: description?.trim() || null,
+                day_of_week: normalizedDay,
                 start_time,
                 end_time,
-                location
+                location: location?.trim() || null
             });
 
+
+        // -----------------------------
+        // GET CREATED RECORD
+        // -----------------------------
 
         const schedule =
             await prayerScheduleModel.getPrayerScheduleById(
@@ -89,7 +154,7 @@ const createPrayerSchedule = async (req, res) => {
             );
 
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             message: "Prayer schedule created successfully",
             schedule
@@ -102,7 +167,7 @@ const createPrayerSchedule = async (req, res) => {
             error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Failed to create prayer schedule"
         });
@@ -113,11 +178,11 @@ const createPrayerSchedule = async (req, res) => {
 // =====================================================
 // GET ALL PRAYER SCHEDULES
 // =====================================================
+
 const getAllPrayerSchedules = async (req, res) => {
     try {
 
         const branch_id = req.user.branch_id;
-
 
         if (!branch_id) {
             return res.status(403).json({
@@ -133,7 +198,7 @@ const getAllPrayerSchedules = async (req, res) => {
             );
 
 
-        res.json({
+        return res.json({
             success: true,
             message: "Prayer schedules fetched successfully",
             count: schedules.length,
@@ -147,7 +212,7 @@ const getAllPrayerSchedules = async (req, res) => {
             error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Failed to fetch prayer schedules"
         });
@@ -158,11 +223,11 @@ const getAllPrayerSchedules = async (req, res) => {
 // =====================================================
 // GET TODAY'S PRAYER SCHEDULES
 // =====================================================
+
 const getTodayPrayerSchedules = async (req, res) => {
     try {
 
         const branch_id = req.user.branch_id;
-
 
         if (!branch_id) {
             return res.status(403).json({
@@ -178,10 +243,12 @@ const getTodayPrayerSchedules = async (req, res) => {
             );
 
 
-        res.json({
+        return res.json({
             success: true,
             message: "Today's prayer schedules fetched successfully",
-            date: new Date().toISOString().split("T")[0],
+            day: new Intl.DateTimeFormat("en-US", {
+                weekday: "long"
+            }).format(new Date()),
             count: schedules.length,
             schedules
         });
@@ -193,7 +260,7 @@ const getTodayPrayerSchedules = async (req, res) => {
             error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Failed to fetch today's prayer schedules"
         });
@@ -204,11 +271,20 @@ const getTodayPrayerSchedules = async (req, res) => {
 // =====================================================
 // GET SINGLE PRAYER SCHEDULE
 // =====================================================
+
 const getPrayerScheduleById = async (req, res) => {
     try {
 
         const branch_id = req.user.branch_id;
         const { id } = req.params;
+
+
+        if (!branch_id) {
+            return res.status(403).json({
+                success: false,
+                message: "Branch is not assigned to this account"
+            });
+        }
 
 
         const schedule =
@@ -226,7 +302,7 @@ const getPrayerScheduleById = async (req, res) => {
         }
 
 
-        res.json({
+        return res.json({
             success: true,
             message: "Prayer schedule fetched successfully",
             schedule
@@ -239,7 +315,7 @@ const getPrayerScheduleById = async (req, res) => {
             error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Failed to fetch prayer schedule"
         });
@@ -250,6 +326,7 @@ const getPrayerScheduleById = async (req, res) => {
 // =====================================================
 // UPDATE PRAYER SCHEDULE
 // =====================================================
+
 const updatePrayerSchedule = async (req, res) => {
     try {
 
@@ -257,15 +334,27 @@ const updatePrayerSchedule = async (req, res) => {
         const { id } = req.params;
 
 
+        if (!branch_id) {
+            return res.status(403).json({
+                success: false,
+                message: "Branch is not assigned to this account"
+            });
+        }
+
+
         const {
             title,
             description,
-            prayer_date,
+            day_of_week,
             start_time,
             end_time,
             location
         } = req.body;
 
+
+        // -----------------------------
+        // TITLE
+        // -----------------------------
 
         if (!title || !title.trim()) {
             return res.status(400).json({
@@ -275,18 +364,36 @@ const updatePrayerSchedule = async (req, res) => {
         }
 
 
-        if (!prayer_date) {
+        // -----------------------------
+        // DAY
+        // -----------------------------
+
+        const normalizedDay = normalizeDay(day_of_week);
+
+        if (!normalizedDay) {
             return res.status(400).json({
                 success: false,
-                message: "Prayer date is required"
+                message: "Valid day of week is required"
             });
         }
 
 
-        if (!start_time || !end_time) {
+        // -----------------------------
+        // TIME
+        // -----------------------------
+
+        if (!isValidTime(start_time)) {
             return res.status(400).json({
                 success: false,
-                message: "Start time and end time are required"
+                message: "Valid start time is required"
+            });
+        }
+
+
+        if (!isValidTime(end_time)) {
+            return res.status(400).json({
+                success: false,
+                message: "Valid end time is required"
             });
         }
 
@@ -298,6 +405,10 @@ const updatePrayerSchedule = async (req, res) => {
             });
         }
 
+
+        // -----------------------------
+        // CHECK EXISTING
+        // -----------------------------
 
         const existingSchedule =
             await prayerScheduleModel.getPrayerScheduleById(
@@ -314,19 +425,27 @@ const updatePrayerSchedule = async (req, res) => {
         }
 
 
+        // -----------------------------
+        // UPDATE
+        // -----------------------------
+
         await prayerScheduleModel.updatePrayerSchedule(
             id,
             branch_id,
             {
                 title: title.trim(),
-                description,
-                prayer_date,
+                description: description?.trim() || null,
+                day_of_week: normalizedDay,
                 start_time,
                 end_time,
-                location
+                location: location?.trim() || null
             }
         );
 
+
+        // -----------------------------
+        // GET UPDATED
+        // -----------------------------
 
         const updatedSchedule =
             await prayerScheduleModel.getPrayerScheduleById(
@@ -335,7 +454,7 @@ const updatePrayerSchedule = async (req, res) => {
             );
 
 
-        res.json({
+        return res.json({
             success: true,
             message: "Prayer schedule updated successfully",
             schedule: updatedSchedule
@@ -348,7 +467,7 @@ const updatePrayerSchedule = async (req, res) => {
             error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Failed to update prayer schedule"
         });
@@ -357,14 +476,23 @@ const updatePrayerSchedule = async (req, res) => {
 
 
 // =====================================================
-// ACTIVATE / DEACTIVATE
+// UPDATE STATUS
 // =====================================================
+
 const updatePrayerScheduleStatus = async (req, res) => {
     try {
 
         const branch_id = req.user.branch_id;
         const { id } = req.params;
         const { status } = req.body;
+
+
+        if (!branch_id) {
+            return res.status(403).json({
+                success: false,
+                message: "Branch is not assigned to this account"
+            });
+        }
 
 
         if (!["ACTIVE", "INACTIVE"].includes(status)) {
@@ -404,13 +532,12 @@ const updatePrayerScheduleStatus = async (req, res) => {
             );
 
 
-        res.json({
+        return res.json({
             success: true,
-            message: `Prayer schedule ${
+            message:
                 status === "ACTIVE"
-                    ? "activated"
-                    : "deactivated"
-            } successfully`,
+                    ? "Prayer schedule activated successfully"
+                    : "Prayer schedule deactivated successfully",
             schedule: updatedSchedule
         });
 
@@ -421,7 +548,7 @@ const updatePrayerScheduleStatus = async (req, res) => {
             error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Failed to update prayer schedule status"
         });
@@ -432,11 +559,20 @@ const updatePrayerScheduleStatus = async (req, res) => {
 // =====================================================
 // DELETE PRAYER SCHEDULE
 // =====================================================
+
 const deletePrayerSchedule = async (req, res) => {
     try {
 
         const branch_id = req.user.branch_id;
         const { id } = req.params;
+
+
+        if (!branch_id) {
+            return res.status(403).json({
+                success: false,
+                message: "Branch is not assigned to this account"
+            });
+        }
 
 
         const existingSchedule =
@@ -460,7 +596,7 @@ const deletePrayerSchedule = async (req, res) => {
         );
 
 
-        res.json({
+        return res.json({
             success: true,
             message: "Prayer schedule deleted successfully"
         });
@@ -472,13 +608,17 @@ const deletePrayerSchedule = async (req, res) => {
             error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Failed to delete prayer schedule"
         });
     }
 };
 
+
+// =====================================================
+// EXPORTS
+// =====================================================
 
 module.exports = {
     createPrayerSchedule,

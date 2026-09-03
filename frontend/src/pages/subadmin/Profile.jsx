@@ -108,7 +108,7 @@ export const SubAdminProfile = () => {
               <div>
                 <span className="profile-field-label">Branch ID</span>
                 <span className="profile-field-value">
-                  #{profile?.branch_id}
+                  {profile?.branch_id}
                 </span>
               </div>
 

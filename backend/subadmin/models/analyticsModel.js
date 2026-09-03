@@ -308,21 +308,34 @@ const getEventsByMonth = async (branch_id) => {
 
 const getPrayerSchedule = async (branch_id) => {
     const [rows] = await db.query(
-        `SELECT
+        `
+        SELECT
             id,
             branch_id,
             title,
             description,
-            prayer_date,
+            day_of_week,
             start_time,
             end_time,
             location,
             status,
             created_at,
             updated_at
-         FROM prayer_schedules
-         WHERE branch_id = ?
-         ORDER BY prayer_date ASC, start_time ASC`,
+        FROM prayer_schedules
+        WHERE branch_id = ?
+        ORDER BY
+            FIELD(
+                day_of_week,
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday',
+                'Sunday'
+            ),
+            start_time ASC
+        `,
         [branch_id]
     );
 
@@ -332,23 +345,25 @@ const getPrayerSchedule = async (branch_id) => {
 
 const getTodayPrayerSchedule = async (branch_id) => {
     const [rows] = await db.query(
-        `SELECT
+        `
+        SELECT
             id,
             branch_id,
             title,
             description,
-            prayer_date,
+            day_of_week,
             start_time,
             end_time,
             location,
             status,
             created_at,
             updated_at
-         FROM prayer_schedules
-         WHERE branch_id = ?
-         AND prayer_date = CURDATE()
-         AND status = 'ACTIVE'
-         ORDER BY start_time ASC`,
+        FROM prayer_schedules
+        WHERE branch_id = ?
+          AND day_of_week = DAYNAME(CURDATE())
+          AND status = 'ACTIVE'
+        ORDER BY start_time ASC
+        `,
         [branch_id]
     );
 

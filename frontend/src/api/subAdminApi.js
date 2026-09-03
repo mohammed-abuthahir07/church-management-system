@@ -322,6 +322,13 @@ export const subAdminApi = {
     return response.data;
   },
 
+  getAnalyticsTopDonorsMonth: async () => {
+    const response = await apiClient.get(
+      '/subadmin/analytics/donations/top-donors/month'
+    );
+    return response.data;
+  },
+  
   getAnalyticsTodayPrayerSchedule: async () => {
     const response = await apiClient.get('/subadmin/analytics/prayer-schedule/today');
     return response.data;

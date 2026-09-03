@@ -22,7 +22,7 @@ import { ConfirmModal } from '../../components/common/ConfirmModal';
 import { EmptyState } from '../../components/common/EmptyState';
 import { TableSkeleton } from '../../components/common/LoadingSkeleton';
 import { ErrorState } from '../../components/common/ErrorState';
-import { formatDate, formatTime, formatDateForInput } from '../../utils/date';
+import { formatTime } from '../../utils/date';
 
 export const SubAdminPrayerSchedules = () => {
   const [schedules, setSchedules] = useState([]);
@@ -39,7 +39,7 @@ export const SubAdminPrayerSchedules = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    prayer_date: formatDateForInput(new Date()),
+    day_of_week: 'Monday',
     start_time: '06:00',
     end_time: '07:00',
     location: 'Main Sanctuary',
@@ -105,50 +105,73 @@ export const SubAdminPrayerSchedules = () => {
   }, [schedules, searchTerm]);
 
   const handleOpenAdd = () => {
-    setIsEditing(false);
-    setSelectedSchedule(null);
-    setFormData({
-      title: '',
-      description: '',
-      prayer_date: formatDateForInput(new Date()),
-      start_time: '06:00',
-      end_time: '07:00',
-      location: 'Main Sanctuary',
-    });
-    setIsFormOpen(true);
-  };
+      setIsEditing(false);
+      setSelectedSchedule(null);
+
+      setFormData({
+        title: '',
+        description: '',
+        day_of_week: 'Monday',
+        start_time: '06:00',
+        end_time: '07:00',
+        location: 'Main Sanctuary',
+      });
+
+      setIsFormOpen(true);
+    };
 
   const handleOpenEdit = (sched) => {
     setIsEditing(true);
     setSelectedSchedule(sched);
+
     setFormData({
       title: sched.title || '',
       description: sched.description || '',
-      prayer_date: formatDateForInput(sched.prayer_date),
-      start_time: sched.start_time ? sched.start_time.substring(0, 5) : '06:00',
-      end_time: sched.end_time ? sched.end_time.substring(0, 5) : '07:00',
+      day_of_week: sched.day_of_week || 'Monday',
+      start_time: sched.start_time
+        ? sched.start_time.substring(0, 5)
+        : '06:00',
+      end_time: sched.end_time
+        ? sched.end_time.substring(0, 5)
+        : '07:00',
       location: sched.location || '',
     });
+
     setIsFormOpen(true);
   };
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-    if (!formData.title.trim() || !formData.prayer_date || !formData.start_time) {
-      toastError('Title, date, and start time are required.');
+    if (
+      !formData.title.trim() ||
+      !formData.day_of_week ||
+      !formData.start_time ||
+      !formData.end_time
+    ) {
+      toastError('Title, day, start time, and end time are required.');
       return;
     }
 
     try {
       setFormSubmitting(true);
       const payload = {
-        title: formData.title.trim(),
-        description: formData.description?.trim() || null,
-        prayer_date: formData.prayer_date,
-        start_time: formData.start_time.length === 5 ? `${formData.start_time}:00` : formData.start_time,
-        end_time: formData.end_time ? (formData.end_time.length === 5 ? `${formData.end_time}:00` : formData.end_time) : null,
-        location: formData.location?.trim() || 'Main Sanctuary',
-      };
+          title: formData.title.trim(),
+          description: formData.description?.trim() || null,
+
+          day_of_week: formData.day_of_week,
+
+          start_time:
+            formData.start_time.length === 5
+              ? `${formData.start_time}:00`
+              : formData.start_time,
+
+          end_time:
+            formData.end_time.length === 5
+              ? `${formData.end_time}:00`
+              : formData.end_time,
+
+          location: formData.location?.trim() || 'Main Sanctuary',
+        };
 
       if (isEditing && selectedSchedule) {
         await subAdminApi.updatePrayerSchedule(selectedSchedule.id, payload);
@@ -265,7 +288,7 @@ export const SubAdminPrayerSchedules = () => {
               <thead>
                 <tr>
                   <th>Prayer Title & Notes</th>
-                  <th>Date</th>
+                  <th>Day</th>
                   <th>Time Slot</th>
                   <th>Sanctuary Location</th>
                   <th className="th-right">Actions</th>
@@ -285,12 +308,12 @@ export const SubAdminPrayerSchedules = () => {
                       )}
                     </td>
 
-                    <td data-label="Date">
-                      <div className="date-cell">
-                        <Calendar className="icon-sm icon-amber" />
-                        <span>{formatDate(sched.prayer_date)}</span>
-                      </div>
-                    </td>
+                    <td data-label="Day">
+                    <div className="date-cell">
+                      <Calendar className="icon-sm icon-amber" />
+                      <span>{sched.day_of_week}</span>
+                    </div>
+                  </td>
 
                     <td data-label="Time">
                       <div className="date-cell cell-name">
@@ -374,8 +397,8 @@ export const SubAdminPrayerSchedules = () => {
               <div className="event-foot">
                 <div className="date-cell">
                   <Calendar className="icon-sm icon-amber" />
-                  <span>{formatDate(sched.prayer_date)}</span>
-                </div>
+                  <span>{sched.day_of_week}</span>
+              </div>
                 <div className="date-cell cell-name">
                   <Clock className="icon-sm icon-amber" />
                   <span>
@@ -418,15 +441,28 @@ export const SubAdminPrayerSchedules = () => {
           <div className="form-grid-3">
             <div>
               <label className="form-label">
-                Prayer Date *
+                Prayer Day *
               </label>
-              <input
-                type="date"
+
+              <select
                 required
-                value={formData.prayer_date}
-                onChange={(e) => setFormData({ ...formData, prayer_date: e.target.value })}
+                value={formData.day_of_week}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    day_of_week: e.target.value
+                  })
+                }
                 className="church-input"
-              />
+              >
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+              </select>
             </div>
 
             <div>

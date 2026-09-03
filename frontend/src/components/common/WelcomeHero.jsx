@@ -62,7 +62,7 @@ export const WelcomeHero = ({
         <p className="welcome-hero__copy">
           {isSuperAdmin
             ? 'Overseeing branches, faithful ministers, stewardship of funds, and global prayer across the church network.'
-            : `Faithfully shepherding ${branchName ? branchName : 'the parish'}, serving members, and walking in Christ's grace.`}
+            : `Faithfully shepherding , serving members, and walking in Christ's grace.`}
         </p>
 
         <div className="welcome-hero__verse font-serif">

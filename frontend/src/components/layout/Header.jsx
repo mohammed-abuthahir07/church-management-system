@@ -58,7 +58,7 @@ export const Header = ({ onOpenMobile }) => {
               </span>
             </h2>
             <p className="app-header__subtitle">
-              {isSuperAdmin ? 'Central Diocese Administration' : 'Local Parish Administration'}
+              {isSuperAdmin ? 'Central Diocese Administration' : 'Local Church Administration'}
             </p>
           </div>
         </div>
