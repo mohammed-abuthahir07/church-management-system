@@ -467,7 +467,7 @@ export const SubAdminPrayerSchedules = () => {
 
             <div>
               <label className="form-label">
-                Start Time *
+                Start Time
               </label>
               <input
                 type="time"
