@@ -220,70 +220,72 @@ export const SubAdmins = () => {
         />
       ) : (
         <div className="church-card table-panel">
-          <div className="table-scroll">
-            <table className="church-table table-to-cards">
-              <thead>
-                <tr>
-                  <th>Administrator</th>
-                  <th>Assigned Branch</th>
-                  <th>Status</th>
-                  <th className="th-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredAdmins.map((admin) => (
-                  <tr key={admin.id}>
-                    <td data-label="Administrator">
-                      <div className="row-name font-serif">
-                        {admin.name}
-                      </div>
-                      <div className="contact-line">
-                        <Mail className="icon-xs icon-muted" />
-                        <span>{admin.email}</span>
-                      </div>
-                    </td>
+  <div className="table-scroll">
+    <table className="church-table table-to-cards">
+      <thead>
+        <tr>
+          <th>Administrator</th>
+          <th>Assigned Branch</th>
+          <th>Status</th>
+          <th className="th-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filteredAdmins.map((admin) => (
+          <tr key={admin.id}>
+            <td data-label="Administrator">
+              <div className="admin-cell">
+                <div className="row-name font-serif">{admin.name}</div>
+                <div className="contact-line">
+                  <Mail className="icon-xs icon-muted" />
+                  <span>{admin.email}</span>
+                </div>
+              </div>
+            </td>
 
-                    <td data-label="Branch">
-                      <div className="branch-tile">
-                        <div className="branch-tile__icon">
-                          <Church className="icon-sm" />
-                        </div>
-                        <div>
-                          <span className="cell-name">
-                            {admin.branch_name || `Branch #${admin.branch_id}`}
-                          </span>
-                        </div>
-                      </div>
-                    </td>
+            <td data-label="Assigned Branch">
+              <div className="branch-tile">
+                <div className="branch-tile__icon">
+                  <Church className="icon-sm" />
+                </div>
+                <span className="cell-name">
+                  {admin.branch_name || `Branch #${admin.branch_id}`}
+                </span>
+              </div>
+            </td>
 
-                    <td data-label="Status">
-                      <StatusBadge status={admin.status} />
-                    </td>
+            <td data-label="Status">
+              <StatusBadge status={admin.status} />
+            </td>
 
-                    <td data-label="Actions">
-                      <div className="row-actions action-row">
-                        <button
-                          onClick={() => handleOpenEdit(admin)}
-                          className="action-btn edit"
-                          title="Edit Sub Admin"
-                        >
-                          <Edit2 className="icon-md" />
-                        </button>
-                        <button
-                          onClick={() => handleOpenDelete(admin)}
-                          className="action-btn danger"
-                          title="Delete Sub Admin"
-                        >
-                          <Trash2 className="icon-md" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+            <td data-label="Actions">
+              <div className="row-actions action-row">
+                <button
+                  type="button"
+                  onClick={() => handleOpenEdit(admin)}
+                  className="action-btn edit"
+                  title="Edit Sub Admin"
+                  aria-label={`Edit ${admin.name}`}
+                >
+                  <Edit2 className="icon-md" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleOpenDelete(admin)}
+                  className="action-btn danger"
+                  title="Delete Sub Admin"
+                  aria-label={`Delete ${admin.name}`}
+                >
+                  <Trash2 className="icon-md" />
+                </button>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
       )}
 
       {/* Add / Edit Modal */}

@@ -207,12 +207,6 @@ export const superAdminApi = {
     const response = await apiClient.get('/superadmin/analytics/events');
     return response.data;
   },
-
-  getPrayerAnalytics: async () => {
-    const response = await apiClient.get('/superadmin/analytics/prayer');
-    return response.data;
-  },
-
   getNotificationAnalytics: async () => {
     const response = await apiClient.get('/superadmin/analytics/notifications');
     return response.data;

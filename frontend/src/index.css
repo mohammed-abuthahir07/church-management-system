@@ -845,3 +845,190 @@ body {
     animation: none !important;
   }
 }
+/* Container & Wrapper Styles */
+.table-panel {
+  width: 100%;
+  overflow: hidden;
+  background: var(--surface-white, #ffffff);
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px -2px rgba(11, 27, 61, 0.05);
+}
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Base Desktop Table Styling */
+.church-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+.church-table th {
+  background-color: #f4efe6;
+  color: var(--navy-850, #0f234d);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem 1.25rem;
+  border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+}
+
+.church-table th.th-right {
+  text-align: right;
+}
+
+.church-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #efe8de;
+  font-size: 0.875rem;
+  color: #334155;
+  background-color: #ffffff;
+  vertical-align: middle;
+  transition: background-color 0.15s ease;
+}
+
+.church-table tr:hover td {
+  background-color: #fdfbf7;
+}
+
+/* Inner Cell Layouts */
+.admin-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.row-name {
+  font-weight: 600;
+  color: #071126;
+  font-size: 0.95rem;
+}
+
+.contact-line {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.branch-tile {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.branch-tile__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 0.5rem;
+  background-color: #fef9c3;
+  color: #d97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* Mobile Breakpoint: Converts table rows into individual stacked cards */
+/* Mobile Responsive Card Overhaul */
+@media (max-width: 767px) {
+  .table-to-cards thead {
+    display: none;
+  }
+
+  .table-to-cards,
+  .table-to-cards tbody,
+  .table-to-cards tr,
+  .table-to-cards td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .table-to-cards tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+
+  .table-to-cards tr {
+    background: #ffffff;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 0.75rem;
+    padding: 0.25rem 0;
+    box-shadow: 0 4px 12px -2px rgba(11, 27, 61, 0.06);
+    overflow: hidden; /* Prevents child content from bleeding out */
+  }
+
+  .table-to-cards td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f3ece0;
+    min-width: 0; /* Critical for flexbox text truncation */
+  }
+
+  .table-to-cards td:last-child {
+    border-bottom: none;
+  }
+
+  /* Data label styling on left side */
+  .table-to-cards td::before {
+    content: attr(data-label);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #64748b;
+    text-align: left;
+    flex-shrink: 0;
+  }
+
+  /* Fixes right-side content overflow */
+  .admin-cell {
+    align-items: flex-end;
+    text-align: right;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .row-name {
+    font-size: 0.9rem;
+    word-break: break-word;
+  }
+
+  /* Prevents email overflow */
+  .contact-line {
+    width: 100%;
+    justify-content: flex-end;
+    min-width: 0;
+  }
+
+  .contact-line span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 160px; /* Truncates long emails cleanly with ellipsis (...) */
+  }
+
+  .branch-tile {
+    justify-content: flex-end;
+  }
+}
