@@ -728,7 +728,7 @@ export const SubAdminAnalytics = () => {
 
       <PageHeader
         title="Parish Growth & Ministry Analytics"
-        subtitle="Complete branch analytics for members, pastors, donations, events, prayer schedules and announcements"
+        subtitle="Complete branch analytics for members, pastors, donations, events, Mass schedules and announcements"
         icon={BarChart3}
       />
 
@@ -827,11 +827,11 @@ export const SubAdminAnalytics = () => {
 
             <div>
               <h3 className="panel-title font-serif">
-                Today's Prayer Schedule
+                Today's Mass Schedule
               </h3>
 
               <p className="count-text">
-                Active weekly prayer gatherings for today
+                Active weekly Mass gatherings for today
               </p>
             </div>
           </div>

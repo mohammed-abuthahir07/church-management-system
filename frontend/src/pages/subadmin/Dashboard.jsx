@@ -196,9 +196,9 @@ export const SubAdminDashboard = () => {
               </div>
               <div>
                 <h3 className="panel-title font-serif">
-                  Today's Prayer Schedule
+                  Today's Mass Schedule
                 </h3>
-                <p className="count-text">Parish prayer vigils and morning services</p>
+                <p className="count-text">Parish Mass vigils and morning services</p>
               </div>
             </div>
             <span className="chip chip--gold">

@@ -214,10 +214,10 @@ export const SubAdminPrayerSchedules = () => {
   return (
     <div className="page">
       <PageHeader
-        title="Parish Prayer Schedules"
+        title="Parish Mass Schedules"
         subtitle="Unite the congregation in daily morning devotions, fasting prayer, and vigils"
         icon={Sparkles}
-        actionText="Schedule Prayer"
+        actionText="Schedule Mass"
         onAction={handleOpenAdd}
       />
 
@@ -287,7 +287,7 @@ export const SubAdminPrayerSchedules = () => {
             <table className="church-table table-to-cards">
               <thead>
                 <tr>
-                  <th>Prayer Title & Notes</th>
+                  <th>Mass Title & Notes</th>
                   <th>Day</th>
                   <th>Time Slot</th>
                   <th>Sanctuary Location</th>
@@ -426,14 +426,14 @@ export const SubAdminPrayerSchedules = () => {
         <form onSubmit={handleSubmitForm} className="form-stack">
           <div>
             <label className="form-label">
-              Prayer Title *
+              Mass Title *
             </label>
             <input
               type="text"
               required
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              placeholder="e.g. Early Morning Intercession, Fasting Prayer"
+              placeholder="e.g. Early Morning Intercession"
               className="church-input"
             />
           </div>
@@ -441,7 +441,7 @@ export const SubAdminPrayerSchedules = () => {
           <div className="form-grid-3">
             <div>
               <label className="form-label">
-                Prayer Day *
+                Mass Day *
               </label>
 
               <select

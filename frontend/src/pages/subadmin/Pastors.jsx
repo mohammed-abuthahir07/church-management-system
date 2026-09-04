@@ -255,7 +255,6 @@ export const SubAdminPastors = () => {
                       <div className="row-name font-serif">
                         {pastor.name}
                       </div>
-                      <div className="row-meta">ID: #{pastor.id}</div>
                     </td>
 
                     <td data-label="Role">
