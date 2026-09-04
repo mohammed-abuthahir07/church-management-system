@@ -68,14 +68,15 @@ const getFundHistory = async (branchId) => {
             f.branch_id,
             b.name AS branch_name,
             f.amount,
+            f.purpose,
+            f.allocated_date,
             f.description,
             f.created_at,
             f.updated_at
-         FROM fund_allocations f
-         LEFT JOIN branches b
-            ON f.branch_id = b.id
-         WHERE f.branch_id = ?
-         ORDER BY f.created_at DESC`,
+        FROM fund_allocations f
+        LEFT JOIN branches b ON f.branch_id = b.id
+        WHERE f.branch_id = ?
+        ORDER BY f.allocated_date DESC, f.created_at DESC`,
         [branchId]
     );
 
