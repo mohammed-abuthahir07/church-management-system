@@ -12,6 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  text-align: center;
   gap: 0.5rem;
 }
 
@@ -27,6 +28,7 @@
 .app-header__brand { gap: 0.5rem; }
 
 .app-header__menu {
+  
   display: none;
   color: #0B1B3D;
 }
@@ -126,7 +128,7 @@
 }
 
 @media (min-width: 640px) {
-  .app-header { height: 4.25rem; padding: 0 1.25rem; }
+  .app-header { height: 4.25rem; padding: 0 1.25rem; text-align: center;}
   .app-header__left { gap: 0.75rem; }
   .app-header__right { gap: 0.75rem; }
   .app-header__icon { width: 36px; height: 36px; }
@@ -143,13 +145,23 @@
 @media (max-width: 1023px) {
   .app-header .app-header__menu {
     display: inline-flex;
+    text-align: center;
   }
 }
 
 @media (min-width: 1024px) {
   .app-header { padding: 0 1.5rem; }
-  .app-header .app-header__menu { display: none !important; }
+  .app-header .app-header__menu { display: none !important; text-align: center; }
   .app-header__title-mobile { display: none; }
   .app-header__title-desktop { display: inline; }
   .app-header__name { max-width: 140px; }
+}
+@media (max-width: 1009px) {
+  .landing-nav a,
+  .landing-nav button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
 }
