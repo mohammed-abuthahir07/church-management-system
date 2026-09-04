@@ -91,7 +91,7 @@ export const SuperAdminLogin = () => {
           <div className="login-visual__copy">
             <div className="login-pill">
               <ShieldCheck className="icon-sm" />
-              <span>Super Admin Portal</span>
+              <span>Branch Admin Portal</span>
             </div>
             <h2 className="login-visual__title font-serif">
               Diocese Central <span className="gold-gradient-text-light font-cinzel">Headquarters</span>
@@ -196,7 +196,7 @@ export const SuperAdminLogin = () => {
           <div className="login-switch">
             <p>
               Managing a local parish branch?{' '}
-              <Link to="/subadmin/login">Parish Admin Login →</Link>
+              <Link to="/subadmin/login">Branch Admin Login →</Link>
             </p>
             <p className="login-home">
               <Link to="/">← Back to Grace Church home</Link>

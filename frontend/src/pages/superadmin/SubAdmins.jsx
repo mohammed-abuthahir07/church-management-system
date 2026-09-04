@@ -361,7 +361,7 @@ export const SubAdmins = () => {
               <option value="">Select a Branch</option>
               {branches.map((b) => (
                 <option key={b.id} value={b.id}>
-                  {b.name} ({b.location || 'Branch'} - #{b.id})
+                  {b.name} ({b.location || 'Branch'})
                 </option>
               ))}
             </select>

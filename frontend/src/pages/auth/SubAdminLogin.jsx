@@ -81,7 +81,7 @@ export const SubAdminLogin = () => {
           <div className="login-visual__copy">
             <div className="login-pill">
               <Church className="icon-sm" />
-              <span>Parish Branch Portal</span>
+              <span>Branch Portal</span>
             </div>
             <h2 className="login-visual__title font-serif">
               Local Church <span className="gold-gradient-text-light font-cinzel">Administration</span>
@@ -184,7 +184,7 @@ export const SubAdminLogin = () => {
           <div className="login-switch">
             <p>
               Are you a Central Diocese Super Admin?{' '}
-              <Link to="/superadmin/login">Super Admin Login →</Link>
+              <Link to="/superadmin/login">Main Church Login →</Link>
             </p>
             <p className="login-home">
               <Link to="/">← Back to Grace Church home</Link>

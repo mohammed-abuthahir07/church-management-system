@@ -199,7 +199,6 @@ export const SuperAdminDashboard = () => {
                 <p className="branch-name font-serif">
                   {highestMonthBranch.branch_name}
                 </p>
-                <p className="count-text">Branch #{highestMonthBranch.branch_id}</p>
               </div>
               <p className="amount-xl">
                 {formatIndianCurrency(highestMonthBranch.total_donation)}
@@ -233,7 +232,7 @@ export const SuperAdminDashboard = () => {
                 <p className="branch-name font-serif">
                   {highestYearBranch.branch_name}
                 </p>
-                <p className="count-text">Branch #{highestYearBranch.branch_id}</p>
+
               </div>
               <p className="amount-xl amount-xl--navy">
                 {formatIndianCurrency(highestYearBranch.total_donation)}

@@ -248,7 +248,7 @@ export const Branches = () => {
                   <tr key={branch.id}>
                     <td data-label="Branch">
                       <div className="row-name font-serif">
-                        <p> {branch.name} : {branch.id}</p> 
+                        <p> {branch.name}</p> 
                       </div>
   
                     </td>
