@@ -29,8 +29,3 @@ Thumbs.db
 dist/
 build/
 
-# Private database certificates
-certificates/
-*.pem
-*.key
-*.crt
