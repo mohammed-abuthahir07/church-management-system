@@ -28,3 +28,9 @@ Thumbs.db
 # Build output (if using TypeScript or bundlers)
 dist/
 build/
+
+# Private database certificates
+certificates/
+*.pem
+*.key
+*.crt
