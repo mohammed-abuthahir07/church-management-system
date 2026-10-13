@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getToken, getUser, setToken, setUser, clearAuthStorage } from '../utils/storage';
 import { superAdminApi } from '../api/superAdminApi';
 import { subAdminApi } from '../api/subAdminApi';
@@ -6,6 +7,7 @@ import { subAdminApi } from '../api/subAdminApi';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
   const [tokenState, setTokenState] = useState(getToken());
   const [userState, setUserState] = useState(getUser());
   const [loading, setLoading] = useState(true);
@@ -56,11 +58,11 @@ export const AuthProvider = ({ children }) => {
     setTokenState(null);
     setUserState(null);
 
-    // Redirect to relevant login page
+    // Client-side redirect so Vercel does not request a missing static path
     if (role === 'SUB_ADMIN') {
-      window.location.href = '/subadmin/login';
+      navigate('/subadmin/login', { replace: true });
     } else {
-      window.location.href = '/superadmin/login';
+      navigate('/superadmin/login', { replace: true });
     }
   };
 
